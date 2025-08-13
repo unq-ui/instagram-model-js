@@ -1,0 +1,21 @@
+{
+  "name": "instagram-model-ts",
+  "version": "1.0.0",
+  "description": "Instagram model",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "node index.ts"
+  },
+  "keywords": [
+    "unq",
+    "uis",
+    "instagram",
+    "model"
+  ],
+  "author": "Juan Pablo Mottesi",
+  "license": "ISC",
+  "dependencies": {
+    "rand-seed": "^3.0.0"
+  }
+}
