@@ -1,47 +1,39 @@
-import type { DraftComment, DraftPost, DraftUser } from "../Drafts/Drafts.ts";
-import { PostException, UserException } from "./Exceptions.ts";
-
-import type { Post } from "./Post.ts";
-import type { User } from "./User.ts";
+import { PostException, UserException } from "./Exceptions.js";
 
 export class InstagramSystem {
-  comments: number;
-  users: Array<User>;
-  posts: Array<Post>;
-
   constructor() {
     this.users = [];
     this.posts = [];
     this.comments = 0;
   }
 
-  private generateUserId(): string {
+  generateUserId() {
     return `user_${this.users.length + 1}`;
   }
 
-  private generateCommentId(): string {
+  generateCommentId() {
     this.comments++;
     return `comment_${this.comments}`;
   }
 
-  private generatePostId(): string {
+  generatePostId() {
     return `post_${this.posts.length + 1}`;
   }
 
-  login(email: string, password: string): User {
+  login(email, password) {
     const user = this.users.find(user => user.email === email && user.password === password);
     if (!user) throw new UserException("Invalid email or password");
     return user;
   }
 
-  private validateNewUser(draftUser: DraftUser): void {
+  validateNewUser(draftUser) {
     const existingUser = this.users.find(user => user.email === draftUser.email);
     if (existingUser) throw new UserException("User already exists");
   }
 
-  register(draftUser: DraftUser): User {
+  register(draftUser) {
     this.validateNewUser(draftUser);
-    const user: User = {
+    const user = {
       ...draftUser,
       id: this.generateUserId(),
       followers: []
@@ -50,21 +42,21 @@ export class InstagramSystem {
     return user;
   }
 
-  getUser(id: string): User {
+  getUser(id) {
     const user = this.users.find(user => user.id === id);
     if (!user) throw new UserException("User not found");
     return user;
   }
 
-  getPost(id: string): Post {
+  getPost(id) {
     const post = this.posts.find(post => post.id === id);
     if (!post) throw new PostException("Post not found");
     return post;
   }
 
-  addPost(userId: string, draftPost: DraftPost): Post {
+  addPost(userId, draftPost) {
     const user = this.getUser(userId);
-    const post: Post = {
+    const post = {
       ...draftPost,
       id: this.generatePostId(),
       user,
@@ -76,19 +68,19 @@ export class InstagramSystem {
     return post;
   }
 
-  editPost(id: string, updatedPost: DraftPost): Post {
+  editPost(id, updatedPost) {
     const post = this.getPost(id);
     Object.assign(post, updatedPost);
     return post;
   }
 
-  deletePost(id: string): void {
+  deletePost(id) {
     const postIndex = this.posts.findIndex(post => post.id === id);
     if (postIndex === -1) throw new PostException("Post not found");
     this.posts.splice(postIndex, 1);
   }
 
-  addComment(postId: string, userId: string, comment: DraftComment): Post {
+  addComment(postId, userId, comment) {
     const user = this.getUser(userId);
     const post = this.getPost(postId);
     post.comments.push({
@@ -99,7 +91,7 @@ export class InstagramSystem {
     return post;
   }
 
-  updateLike(postId: string, userId: string): Post {
+  updateLike(postId, userId) {
     const user = this.getUser(userId);
     const post = this.getPost(postId);
     if (post.likes.includes(user)) {
@@ -110,7 +102,7 @@ export class InstagramSystem {
     return post;
   }
 
-  updateFollower(fromUserId: string, toUserId: string): User {
+  updateFollower(fromUserId, toUserId) {
     const fromUser = this.getUser(fromUserId);
     const toUser = this.getUser(toUserId);
     if (fromUser.followers.includes(toUser)) {
@@ -121,26 +113,26 @@ export class InstagramSystem {
     return fromUser;
   }
 
-  searchByTag(tag: string): Array<Post> {
+  searchByTag(tag) {
     return this.posts.filter(post => post.description.includes(`#${tag}`)).sort((a, b) => b.date.getTime() - a.date.getTime());
   }
 
-  searchByUserName(name: string): Array<Post> {
+  searchByUserName(name) {
     const userIds = this.users.filter(user => user.name.includes(name));
     return this.posts.filter(post => userIds.includes(post.user)).sort((a, b) => b.date.getTime() - a.date.getTime());
   }
 
-  searchByUserId(userId: string): Array<Post> {
+  searchByUserId(userId) {
     const user = this.getUser(userId);
     return this.posts.filter(post => post.user === user).sort((a, b) => b.date.getTime() - a.date.getTime());
   }
 
-  searchByName(name: string): Array<User> {
+  searchByName(name) {
     if (!name) return [];
     return this.users.filter(user => user.name.includes(name)).sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  timeline(userId: string): Array<Post> {
+  timeline(userId) {
     const user = this.getUser(userId);
     return this.posts.filter(post => user.followers.includes(post.user)).sort((a, b) => b.date.getTime() - a.date.getTime());
   }

@@ -1,11 +1,11 @@
 {
-  "name": "instagram-model-ts",
+  "name": "instagram-model-js",
   "version": "1.0.0",
   "description": "Instagram model",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.ts"
+    "start": "node index.js"
   },
   "keywords": [
     "unq",
