@@ -48,6 +48,11 @@ export class InstagramSystem {
     return user;
   }
 
+  getPostByUserId(userId) {
+    const user = this.getUser(userId);
+    return this.posts.filter(post => post.user.id === user.id);
+  }
+
   getPost(id) {
     const post = this.posts.find(post => post.id === id);
     if (!post) throw new PostException("Post not found");

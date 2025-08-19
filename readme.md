@@ -1,9 +1,9 @@
-# Instagram Model TS Documentation
+# Instagram Model JS Documentation
 
 ## How to use
 
 ```typescript
-const system = instagramSystem;
+const system = getInstagramSystem();
 ```
 
 ## InstagramSystem
@@ -51,6 +51,16 @@ class InstagramSystem {
    * @throws {PostException} If the post with the given ID does not exist.
    */
   getPost(id: string): Post
+
+  /**
+   * Retrieves all posts created by a specific user.
+   *
+   * @param {string} userId - The ID of the user whose posts are to be retrieved.
+   * @returns {Array<Post>} An array of posts created by the specified user.
+   * @throws {UserException} If the user with the given ID does not exist.
+   */
+  getPostByUserId(userId: string): Array<Post>
+
 
   /**
    * Adds a new post to the system for a given user.
