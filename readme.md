@@ -1,5 +1,11 @@
 # Instagram Model JS Documentation
 
+## How to install
+
+```bash
+npm i @unq-ui/instagram-model-js
+```
+
 ## How to use
 
 ```typescript
